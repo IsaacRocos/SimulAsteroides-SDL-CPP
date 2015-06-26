@@ -1,0 +1,14 @@
+Main : main.cpp Juego.o 
+	g++ -std=c++11 main.cpp Juego.o PoligonoRegular/PoligonoSDL.o  PoligonoRegular/Coordenada.o PoligonoRegular/PoligonoReg.o -o Proy3Asteroides  -lSDL2
+
+Juego.o: Juego.cpp PoligonoRegular/Coordenada.o PoligonoRegular/PoligonoReg.o PoligonoRegular/PoligonoSDL.o  Juego.h 
+	g++ -std=c++11 Juego.cpp PoligonoRegular/Coordenada.o PoligonoRegular/PoligonoSDL.o PoligonoRegular/PoligonoReg.o -lSDL2  -c
+
+PoligonoSDL.o: PoligonoRegular/PoligonoSDL.cpp PoligonoRegular/PoligonoSDL.h
+	g++ PoligonoRegular/PoligonoSDL.cpp -c
+
+PoligonoReg.o: PoligonoRegular/PoligonoReg.cpp PoligonoRegular/Coordenada.o PoligonoRegular/PoligonoReg.h 
+	g++ PoligonoRegular/PoligonoReg.cpp -c
+
+Coordenada.o: PoligonoRegular/Coordenada.cpp PoligonoRegular/Coordenada.h
+	g++ PoligonoRegular/Coordenada.cpp -c
