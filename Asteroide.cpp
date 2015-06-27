@@ -10,8 +10,8 @@ using namespace std;
 Asteroide::Asteroide() {
     puntosSDL = new SDL_Point[21];
     nuevoAsteroide();
-    cout<<"Comprobando creacion..."<<endl;
-    comprobar();
+    //cout<<"Comprobando creacion..."<<endl;
+    //comprobar();
     cout<<"[OK]..."<<endl;
 }
 
@@ -28,7 +28,9 @@ void Asteroide::nuevoAsteroide() {
     double angulo;
     double x, y;
     Vector2D* vec2dAux;
-    cout<<"Creando Asteroide..."<<endl;
+    cout<<"-------------------"<<endl;
+    cout<<" Creando Asteroide "<<endl;
+    cout<<"-------------------"<<endl;
     centroAst = new Vector2D(posicionAst.getX(),posicionAst.getY());
     cout<<"CENTRO: "<<posicionAst.getX()<<" , "<<posicionAst.getY()<<endl;
     radioAst = numAleatorio(RADIO_MINIMO, RADIO_MAXIMO);
@@ -47,9 +49,9 @@ void Asteroide::nuevoAsteroide() {
     }
     puntosSDL[numPuntos].x = puntosSDL[0].x;
     puntosSDL[numPuntos].y = puntosSDL[0].y;
-    sentidoGiro = ((int)numAleatorio(0,1.2));
-    if(sentidoGiro>0){sentidoGiro = 1;cout<<"Giro derecha"<<endl;}
-    else{sentidoGiro = -1;cout<<"Giro izquierda"<<endl;}
+    sentidoGiro = ((int)numAleatorio(0,2));
+    if(sentidoGiro>0){sentidoGiro = 1;cout<<"*Giro derecha"<<endl;}
+    else{sentidoGiro = -1;cout<<"*Giro izquierda"<<endl;}
 }
 
 
