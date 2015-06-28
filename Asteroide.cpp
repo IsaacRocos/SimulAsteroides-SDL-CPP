@@ -28,9 +28,10 @@ void Asteroide::nuevoAsteroide() {
     double angulo;
     double x, y;
     Vector2D* vec2dAux;
-    cout<<"-------------------"<<endl;
+    cout<<"\n-------------------"<<endl;
     cout<<" Creando Asteroide "<<endl;
     cout<<"-------------------"<<endl;
+    posicionAst.nuevaPosicion();
     centroAst = new Vector2D(posicionAst.getX(),posicionAst.getY());
     cout<<"CENTRO: "<<posicionAst.getX()<<" , "<<posicionAst.getY()<<endl;
     radioAst = numAleatorio(RADIO_MINIMO, RADIO_MAXIMO);
@@ -52,12 +53,13 @@ void Asteroide::nuevoAsteroide() {
     sentidoGiro = ((int)numAleatorio(0,2));
     if(sentidoGiro>0){sentidoGiro = 1;cout<<"*Giro derecha"<<endl;}
     else{sentidoGiro = -1;cout<<"*Giro izquierda"<<endl;}
+    setVelocidad(radioAst);
 }
 
 
 void Asteroide::updatePos() {
     //cout<<"Actualizando posiciones...";
-    posicionAst.mueve(radioAst + 0.0); // actualizar vaores de X y Y en centro
+    posicionAst.mueve(velocidad); // actualizar vaores de X y Y en centro
     centroAst->setX(posicionAst.getX());
     centroAst->setY(posicionAst.getY());
         for(int i = 0; i < numPuntos; i++){
@@ -101,6 +103,23 @@ void Asteroide::limpiarVector() {
     }
 }
 
+Vector2D* Asteroide::getCentro(void){
+    return centroAst;
+}
+
+void Asteroide::setVelocidad(double radioAst){
+    velocidad = FACTOR_VELOCIDAD / radioAst;
+}
+
+
+//void Asteroide::actualizarVeloidad(double velPostColision){
+//    velocidad = velPostColision;
+//}
+
+void Asteroide::actualizarDireccion(double posCXAstGolpeador, double posCYAstGolpeador){
+    cout<<"Actualizacion Posicion despues de colision no implementada aun..."<<endl;
+}
+
 void Asteroide::setRenderer(SDL_Renderer* renderer) {
     gRenderer = renderer;
 }
@@ -116,5 +135,10 @@ SDL_Point* Asteroide::getPuntos() {
 
 int Asteroide::getNPuntos() {
     return numPuntos;
+}
+
+
+double Asteroide::getRadio(void){
+    return radioAst;
 }
 

@@ -6,7 +6,7 @@
 using namespace std;
 
 Posicion::Posicion(){
-	nuevaPosicion();
+	//nuevaPosicion();
 }
 
 // Para inicializar y resetear posic
@@ -20,8 +20,8 @@ void Posicion::nuevaPosicion(){
 void Posicion::iniDirecciones(){
 	dirH = ((int)numAleatorio(-5, 5));
 	dirV = ((int)numAleatorio(-5, 5));
-	posHC = ((int)numAleatorio(-5, 5));
-	posVC = ((int)numAleatorio(-5, 5));
+	posHC = ((int)numAleatorio(-7, 7));
+	posVC = ((int)numAleatorio(-7, 7));
 	int variacionPosX = ((int)numAleatorio(-80, 80));
 	int variacionPosY = ((int)numAleatorio(-80, 80));
 	bool centroHActivo = false;
@@ -76,30 +76,20 @@ void Posicion::iniDirecciones(){
 	}
 }
 
-double Posicion::getX(){
-	return x;
-}
 
-double Posicion::getY(){
-	return y;
-}
-
-void Posicion::mueve(double radio){
+// Mover el centro del asteroiode con base en su direccion ya definida
+void Posicion::mueve(double desplazamiento){
 	if(dirH>0){
-		x += 8/radio; 
-		//x++;
+		x += desplazamiento; 
 	}
 	else{
-		x -= 8/radio;
-		//x--;
+		x -= desplazamiento;
 	}
 	if(dirV>0) {
-		y += 8/radio;
-		//y++;
+		y += desplazamiento;
 	}
 	else {
-		y -= 8/radio;
-		//y--;
+		y -= desplazamiento;
 	}
 }
 
@@ -123,7 +113,19 @@ bool Posicion::verificarLugar(){
 	if(posEnVentana == 2) {nuevaPosicion(); return true; } else {return false;}
 }
 
+
+
+double Posicion::getX(){
+	return x;
+}
+
+double Posicion::getY(){
+	return y;
+}
+
+
 double Posicion::numAleatorio(double n, double m){
     return rand()*(1.0/RAND_MAX)*(m-n) + n;
 }
+
 

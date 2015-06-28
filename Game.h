@@ -10,12 +10,13 @@
 class Game{
 	public:
 		Game(const char* nombre, int xpos, int ypos, int win_w, int win_h, int numeroAst);
-		void generaAsteroides();
-		void manejaEventos();
-		void update();//actualizar posiciones
-		void render();//dibujar todo
-		void eventoCerrar();
-		int getRunning();
+		void generaAsteroides(void);
+		void manejaEventos(void);
+		void update(void);//actualizar posiciones
+		void render(void);//dibujar todo
+		void eventoCerrar(void);
+		int getRunning(void);
+		void verificarColisones();
 		~Game();
 	private:
 		SDL_Window* window;
