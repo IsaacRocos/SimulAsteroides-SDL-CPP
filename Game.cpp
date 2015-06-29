@@ -85,38 +85,61 @@ void Game::verificarColisones(void){
     int rA1 , rA2; // radios asteroides
     int distanciaColision;
     int dX,dY;
+    int dirHAux, dirVAux;
+    double miA1, miA2;
+ 
     for (int i = 0; i < numeroAsteroides; i++) {
         for (int j = 0; j < numeroAsteroides; j++) {
             if(i==j){continue;} // Evitar comparar asteroide con él mismo
+            //if(asteroides[i]-> getPosicionEnVentana() <=1 || asteroides[j]-> getPosicionEnVentana() <=1){
+                //continue;
+            //}            
             // Obtener centro de asteroide base
             cxA1 = asteroides[i]-> getCentro() -> getX();
             cyA1 = asteroides[i]-> getCentro() -> getY();
             // Obtener radio de asteroide base
             rA1  = asteroides[i]-> getRadio();
+            // Obtener momento inercial
+            miA1 = asteroides[i]-> getMomentoInercial();
             //cout<<cxA1<<" " <<cyA1 <<endl;
+
             cxA2 = asteroides[j]-> getCentro() -> getX();
             cyA2 = asteroides[j]-> getCentro() -> getY();
             rA2  = asteroides[j]-> getRadio();
+            miA2 = asteroides[j]-> getMomentoInercial();
+            // Calcular distancia de colision
             distanciaColision = rA1 + rA2;
+            // Calcular distancia actual entre los asteroides
             dX = abs(cxA1 - cxA2);
             dY = abs(cyA1 - cyA2);
+
             if(dX<=distanciaColision && dY<=distanciaColision){
                 cout<<"\n-------------------------"<<endl;
-                cout<<"[Co: A"<<i<<" <-> A"<<j<<"]"<<endl;
+                cout<<"[COLISION: A"<<i<<" <-> A"<<j<<"]"<<endl;
                 cout<<"Distancia de colision: "<<distanciaColision<<endl;
                 cout<<"dX = " <<dX<<" dY = "<<dY<<endl;
-                if(rA1 > rA2){
-                    cout<<" -Choque A1>A2: "<<rA1<<">"<<rA2<<endl;
+                if(miA1 > miA2){
+                    cout<<" -Choque MIA1>MIA2: "<<rA1<<">"<<rA2<<endl;
+                    cout<<"\t"<<miA1<<" > "<<miA2<<endl;
+                    asteroides[i] -> actualizarDireccion(asteroides[j] -> getDirH(), asteroides[j] -> getDirV());
                     asteroides[j] -> nuevoAsteroide();
-                } else if(rA1 < rA2){
-                    cout<<" -Choque A1<A2: "<<rA1<<"<"<<rA2<<endl;
+                } else if(miA1 < miA2){
+                    cout<<" -Choque MIA1<MIA2: "<<rA1<<"<"<<rA2<<endl;
+                    cout<<"\t"<<miA1<<" < "<<miA2<<endl;
+                    asteroides[j] -> actualizarDireccion(asteroides[i] -> getDirH(), asteroides[i] -> getDirV());
                     asteroides[i] -> nuevoAsteroide();
                     j=0; // Reanudar revision para todos los asteroides
                     break;
-                }else if(rA1 == rA2){
-                    cout<<" -Choque IGUALES"<<endl;
+                }else if(miA1 == miA2){
+                    cout<<" -Choque - MOMENTOS INERCIALES IGUALES... WTF!-"<<endl;
+                    cout<<"\t"<<miA1<<" = "<<miA2<<endl;
                     asteroides[j] -> nuevoAsteroide();
                     asteroides[i] -> nuevoAsteroide();
+                    //dirHAux = asteroides[j] -> getDirH(); // Tomar direcciones de AstJ  antes de actualizar
+                    //dirVAux = asteroides[j] -> getDirV();
+
+                    //asteroides[j] -> actualizarDireccion(asteroides[i] -> getDirH(), asteroides[i] -> getDirV());
+                    //asteroides[i] -> actualizarDireccion(dirHAux, dirVAux);
                     break;
                 }
                 cout<<"-------------------------"<<endl;

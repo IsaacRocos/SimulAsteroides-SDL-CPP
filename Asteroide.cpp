@@ -8,7 +8,7 @@
 using namespace std;
 
 Asteroide::Asteroide() {
-    puntosSDL = new SDL_Point[21];
+    puntosSDL = new SDL_Point[MAX_VERTICES+1];
     nuevoAsteroide();
     //cout<<"Comprobando creacion..."<<endl;
     //comprobar();
@@ -36,24 +36,35 @@ void Asteroide::nuevoAsteroide() {
     cout<<"CENTRO: "<<posicionAst.getX()<<" , "<<posicionAst.getY()<<endl;
     radioAst = numAleatorio(RADIO_MINIMO, RADIO_MAXIMO);
     numPuntos = numAleatorio(MIN_VERTICES, MAX_VERTICES);
-    cout << "[NV]: "<<numPuntos<<endl;
-    cout << "[R]: "<<radioAst<<endl;
+    cout << "[NPuntos]: "<<numPuntos<<endl;
+    cout << "[Radio]: "<<radioAst<<endl;
     puntosVector.reserve(numPuntos);
+    double variacionX = 0;
+    double variacionY = 0;
+    double variacionTotal = 0;
     for(int i = 0; i < numPuntos; i++){
         angulo = ((i+1)*(2*M_PI/numPuntos)) + numAleatorio(0.1, (5*M_PI/numPuntos)/2.0);
-        x = radioAst * sin(angulo+0.1) + numAleatorio(0.7, ((double)radioAst)/10.0);
-        y = radioAst * cos(angulo) + numAleatorio(0.3, ((double)radioAst)/8.0); 
+        variacionX = numAleatorio(0.7, ((double)radioAst)/10.0);
+        variacionY = numAleatorio(0.3, ((double)radioAst)/8.0);
+        x = radioAst * sin(angulo+0.1) + variacionX;
+        y = radioAst * cos(angulo) + variacionY; 
         vec2dAux = new Vector2D(x,y);
         puntosVector.push_back(vec2dAux);
         puntosSDL[i].x = puntosVector[i]->getX() + centroAst->getX();
         puntosSDL[i].y = puntosVector[i]->getY() + centroAst->getY();
+        variacionTotal =  variacionTotal + variacionX + variacionY;
     }
     puntosSDL[numPuntos].x = puntosSDL[0].x;
     puntosSDL[numPuntos].y = puntosSDL[0].y;
+
+    setMasa(radioAst+0.0, variacionTotal);
     sentidoGiro = ((int)numAleatorio(0,2));
     if(sentidoGiro>0){sentidoGiro = 1;cout<<"*Giro derecha"<<endl;}
     else{sentidoGiro = -1;cout<<"*Giro izquierda"<<endl;}
     setVelocidad(radioAst);
+    cout<<"Masa: "<<masa<<endl;
+    cout<<"Velocidad: "<<velocidad<<endl;
+    cout<<"Momento Inercial: "<<getMomentoInercial()<<endl;
 }
 
 
@@ -107,17 +118,35 @@ Vector2D* Asteroide::getCentro(void){
     return centroAst;
 }
 
+void Asteroide::setMasa(double radioAst, double variacionTotal){
+    masa = M_PI * ((radioAst+0.0) * (radioAst+0.0)) + variacionTotal;
+}
+
 void Asteroide::setVelocidad(double radioAst){
-    velocidad = FACTOR_VELOCIDAD / radioAst;
+    velocidad = FACTOR_VELOCIDAD / radioAst;//(masa+0.0);
 }
 
 
-//void Asteroide::actualizarVeloidad(double velPostColision){
-//    velocidad = velPostColision;
-//}
+void Asteroide::actualizarDireccion(double dirHAstGolpeador, double dirVYAstGolpeador){
+    posicionAst.setDirH(dirHAstGolpeador);
+    posicionAst.setDirV(dirVYAstGolpeador);
+}
 
-void Asteroide::actualizarDireccion(double posCXAstGolpeador, double posCYAstGolpeador){
-    cout<<"Actualizacion Posicion despues de colision no implementada aun..."<<endl;
+int Asteroide::getDirH(void){
+    return posicionAst.getDirH();
+}
+
+
+double Asteroide::getMomentoInercial(void){
+    return velocidad * masa;
+}
+
+int Asteroide::getDirV(void){
+    return posicionAst.getDirV();
+}
+
+int Asteroide::getPosicionEnVentana(){
+    return posicionAst.getPosicionEnVentana();
 }
 
 void Asteroide::setRenderer(SDL_Renderer* renderer) {

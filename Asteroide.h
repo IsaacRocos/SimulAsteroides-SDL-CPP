@@ -8,9 +8,9 @@
 //--CONSTANTES -----------------------
 #define MAX_VERTICES	 22
 #define MIN_VERTICES	 12
-#define RADIO_MAXIMO	 100.0
+#define RADIO_MAXIMO	 70.0
 #define RADIO_MINIMO	 10.0
-#define FACTOR_VELOCIDAD 10.0
+#define FACTOR_VELOCIDAD 15.0//550.0 
 //#define VEL_ROTACION    10.0   
 //#define CAMBIO_ANGULO   15.0
 //------------------------------------
@@ -29,13 +29,17 @@ class Asteroide{
                 void setRenderer(SDL_Renderer* renderer);
                 void setVelocidad(double vel);
                 void setDesplazamiento(double desp);
-                void actualizarDireccion(double posCXAstGolpeador, double posCYAstGolpeador);
+                void setMasa(double, double);
+                void actualizarDireccion(double dirHAstGolpeador, double dirVAstGolpeador);
                 
                 SDL_Point* getPuntos(void);
                 Vector2D* getCentro(void);
-                int getNPuntos(void);
                 double getRadio(void);
-
+                int getNPuntos(void);
+                int getDirH(void);
+                int getDirV(void);
+                int getPosicionEnVentana(void);
+                double getMomentoInercial(void);
 
         private:
                 int numPuntos;
@@ -48,6 +52,7 @@ class Asteroide{
                 short sentidoGiro; // 0 izquierda, 1 derecha
                 double desplazamiento;
                 double velocidad;
+                double masa;
 };
 
 #endif	
